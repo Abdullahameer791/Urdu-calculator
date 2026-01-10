@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اردو کیلکولیٹر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+             direction: rlt;
+            text-align: right;
+            background-color: #f9f9f9;
+        }
+        input[type="text"] {
+            width: 300px;
+            font-size: 20px;
+            margin-bottom: 10px;
+            padding: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin: auto;
+            width: 300px;
+        }
+        button {
+            padding: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>اردو حساب</h1>
+    <input type="text" id="input" placeholder=" " readonly>
+    <input type="text" id="result" placeholder=" " readonly>
+    
+    <div class="grid">
+        <button onclick="appendNumber('1')">۱</button>
+        <button onclick="appendNumber('2')">۲</button>
+        <button onclick="appendNumber('3')">۳</button>
+        <button onclick="clearInput()">صاف</button>
+        <button onclick="appendNumber('4')">۴</button>
+        <button onclick="appendNumber('5')">۵</button>
+        <button onclick="appendNumber('6')">۶</button>
+        <button onclick="appendToInput('+')">جمع</button>
+        <button onclick="appendNumber('7')">۷</button>
+        <button onclick="appendNumber('8')">۸</button>
+        <button onclick="appendNumber('9')">۹</button>
+        <button onclick="appendToInput('-')">تفریق</button>
+        <button onclick="deleteLastCharacter()">واپس«</button>
+        <button onclick="appendNumber('0')">۰</button>
+        <button onclick="appendToInput('%')">%</button>
+        <button onclick="appendToInput('*')">ضرب</button>
+        <button onclick="calculate()">حساب=</button>
+        <button onclick="appendToInput('.')">.</button>
+        <button onclick="appendNumber('00')">۰۰</button>
+        <button onclick="appendToInput('/')">تقسیم</button>
+    </div>
+
+    <script>
+        function appendNumber(value) {
+            const inputField = document.getElementById('input');
+            inputField.value += value;
+            formatInput(); // Format input while typing
+        }
+
+        function clearInput() {
+            document.getElementById('input').value = '';
+            document.getElementById('result').value = '';
+        }
+
+        function deleteLastCharacter() {
+            const inputField = document.getElementById('input');
+            inputField.value = inputField.value.slice(0, -1);
+            formatInput(); // Format input while deleting
+        }
+
+        function appendToInput(value) {
+            const inputField = document.getElementById('input');
+            inputField.value += value;
+            formatInput(); // Format input while typing
+        }
+
+        function formatInput() {
+            const inputField = document.getElementById('input');
+            const numericValue = inputField.value.replace(/,/g, ''); // Remove existing commas
+            inputField.value = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function calculate() {
+            const input = document.getElementById('input').value.replace(/,/g, ''); // Remove commas for calculation
+            try {
+                const result = eval(input.replace(/جمع/g, '+')
+                                      .replace(/تفریق/g, '-')
+                                      .replace(/ضرب/g, '*')
+                                      .replace(/تقسیم/g, '/')
+                                      .replace(/%/g, '/100'));
+                document.getElementById('result').value = result.toLocaleString(); // Format result with comma
+            } catch (error) {
+                document.getElementById('result').value = "!غلط";
+            }
+        }
+    </script>
+</body>
+</html>
